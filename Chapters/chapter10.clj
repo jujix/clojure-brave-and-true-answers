@@ -48,4 +48,16 @@
 (defn start-game
   []
   (let [alliance-knight (ref {:hp 15 :max-hp 40 :healing-potions 0})
-  [horde-orc (ref {:hp 40 :max-hp 40 :healing-potions 1})]]))
+  horde-orc (ref {:hp 40 :max-hp 40 :healing-potions 1})]
+(do
+  (println (str "alliance-knight: " (str-character-state @alliance-knight)))
+(println (str "horde-orc: " (str-character-state @horde-orc)))
+
+(println "Orc uses a potion... ")
+(dosync
+  (alter horde-orc update-in [:healing-potions] dec)
+    (alter alliance-knight update-in [:hp] + (- (:max-hp @alliance-knight) (:hp @alliance-knight))))
+    (println (str "Alliance knight status: " (str-character-state @alliance-knight)))
+        (println (str "Horde orcs status: " (str-character-state @horde-orc)))
+  )
+  ))
